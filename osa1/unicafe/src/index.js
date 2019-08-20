@@ -19,6 +19,16 @@ const App = () => {
     setBad(bad + 1)
   }
 
+  const customAverage = () => {
+    let y = good + neutral + bad
+    let i = good + 0 + -bad 
+    return i / y || 0
+  }
+
+  const positive = (num, amout) => num / amout * 100 || 0
+
+  const sum = (arr) => arr.reduce((a, b) => a + b, 0)
+
   return (
     <div>
       <h1>give feedback</h1>
@@ -30,6 +40,9 @@ const App = () => {
       <p>good {good}</p>
       <p>neutral {neutral}</p>
       <p>bad {bad}</p>
+      <p>all {sum([good, bad, neutral])}</p>
+      <p>avarage {customAverage()}</p>
+      <p>positive {positive(good, good + neutral + bad)}%</p>
     </div>
   )
 }
