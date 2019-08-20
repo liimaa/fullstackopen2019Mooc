@@ -1,6 +1,30 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
+const Statistics = ({good, bad, neutral}) => {
+
+  const customAverage = () => {
+    let y = good + neutral + bad
+    let i = good + 0 + -bad 
+    return i / y || 0
+  }
+
+  const positive = (num, amout) => num / amout * 100 || 0
+
+  const sum = (arr) => arr.reduce((a, b) => a + b, 0)
+
+  return(
+    <div>
+      <p>good {good}</p>
+      <p>neutral {neutral}</p>
+      <p>bad {bad}</p>
+      <p>all {sum([good, bad, neutral])}</p>
+      <p>avarage {customAverage()}</p>
+      <p>positive {positive(good, good + neutral + bad)}%</p>
+    </div>
+  )
+}
+
 const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
@@ -19,16 +43,6 @@ const App = () => {
     setBad(bad + 1)
   }
 
-  const customAverage = () => {
-    let y = good + neutral + bad
-    let i = good + 0 + -bad 
-    return i / y || 0
-  }
-
-  const positive = (num, amout) => num / amout * 100 || 0
-
-  const sum = (arr) => arr.reduce((a, b) => a + b, 0)
-
   return (
     <div>
       <h1>give feedback</h1>
@@ -37,12 +51,12 @@ const App = () => {
       <button onClick={handleBad}>Bad</button>
 
       <h2>Statistics</h2>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {sum([good, bad, neutral])}</p>
-      <p>avarage {customAverage()}</p>
-      <p>positive {positive(good, good + neutral + bad)}%</p>
+      <Statistics 
+        good={good}
+        bad={bad}
+        neutral={neutral}
+      />
+
     </div>
   )
 }
