@@ -5,16 +5,26 @@ import ReactDOM from 'react-dom'
 const Header = ({course}) => <h1>{course}</h1>
 
 
-const Content = ({parts}) => {
+const Content = (parts) => {
+  
+  console.log(parts);
+
   return (
-    null
+    <Part {...parts} />
+    <Part {...parts} />
+    <Part {...parts} />
   )
+  
 }
 
 const Total = ({parts}) => {
   return (
     null
   )
+}
+
+const Part = (params) => {
+  
 }
 
 const App = () => {
