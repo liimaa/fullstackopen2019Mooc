@@ -13,6 +13,12 @@ const Statistics = ({good, bad, neutral}) => {
 
   const sum = (arr) => arr.reduce((a, b) => a + b, 0)
 
+  if(!good && !bad && !neutral) {
+    return(
+      <p>No feedback given</p>
+    )
+  }
+
   return(
     <div>
       <p>good {good}</p>
