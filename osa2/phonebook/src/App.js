@@ -26,13 +26,13 @@ const App = () => {
 
   const handleNewPerson = (event) => {
     event.preventDefault()
-    const newPerson = {name: newName, number: newNumber}
+    let newPerson = {name: newName, number: newNumber}
     if(persons.find(person => person.name === newName)) {
       alert(`${newName} is already added to phonebook`)
       return
     }
-    setPersons([...persons, newPerson])
     personService.create(newPerson)
+      .then(person => setPersons([...persons, person]))
   }
 
   const handleNameChange = (event) => {
@@ -48,7 +48,17 @@ const App = () => {
   }
 
   const filteredPersons = () => {
+    console.log(persons);
     return persons.filter(person => person.name.toLowerCase().includes(filterValue))
+  }
+
+  const handlePersonDelete = (event) => {
+    let { id, name } = event.target
+    if(window.confirm(`Do you want to delete ${name}`)) {
+      const newPersons = persons.filter(person => person.id !== Number(id))
+      setPersons([...newPersons])
+      personService.remove(id)
+    }
   }
 
   return (
@@ -71,6 +81,7 @@ const App = () => {
       <h2>Numbers</h2>
       <Persons 
         persons={filteredPersons()}
+        handleDelete={handlePersonDelete}
       />
       
     </div>
