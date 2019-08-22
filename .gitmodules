@@ -1,0 +1,3 @@
+[submodule "osa3/phonebookbackend-fsopen2019"]
+	path = osa3/phonebookbackend-fsopen2019
+	url = git@github.com:liimaa/phonebookbackend-fsopen2019.git
