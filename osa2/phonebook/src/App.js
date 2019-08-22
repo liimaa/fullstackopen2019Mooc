@@ -18,7 +18,7 @@ const App = () => {
   const [newName, setNewName] = useState('Test')
   const [newNumber, setNewNumber] = useState('7777')
   const [filterValue, setFilter] = useState('')
-  const [errorMessage, setErrorMessage] = useState({message: '', type: ''})
+  const [notification, setNotification] = useState({message: '', type: ''})
 
   useEffect(() => {
     axios.get('http://localhost:3001/persons')
@@ -40,8 +40,8 @@ const App = () => {
     personService.create(newPerson)
       .then(person => {
         setPersons([...persons, person])
-        setErrorMessage({message: `Added ${newName}`, type: 'success'})
-        setTimeout(() => setErrorMessage({}), 3000);
+        setNotification({message: `Added ${newName}`, type: 'success'})
+        setTimeout(() => setNotification({}), 3000);
       })
   }
 
@@ -67,7 +67,10 @@ const App = () => {
     if(window.confirm(`Do you want to delete ${name}`)) {
       const newPersons = persons.filter(person => person.id !== Number(id))
       setPersons([...newPersons])
-      personService.remove(id)
+      personService.remove(id).catch(error => {
+        setNotification({message: `Information already deleted from server ${error}`, type: 'error'})
+        setTimeout(() => setNotification({}), 3000)
+      })
     }
   }
 
@@ -75,14 +78,14 @@ const App = () => {
     personService.update(id, newPerson)
       .then(servicePerson => {
         setPersons(persons.map(person => person.id !== id ? person : servicePerson))
-        setErrorMessage({message: `Updated ${newName}`, type: 'success'})
-        setTimeout(() => setErrorMessage({}), 3000);
+        setNotification({message: `Updated ${newName}`, type: 'success'})
+        setTimeout(() => setNotification({}), 3000);
       })
   }
 
   return (
     <div>
-      <Notification {...errorMessage} />
+      <Notification {...notification} />
 
       <h2>Phonebook</h2>
       <FilterForm 
