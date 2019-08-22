@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import './App.css'
 import FilterForm from './components/FilterForm'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import personService from './services/personService';
 
 const App = () => {
@@ -16,6 +18,7 @@ const App = () => {
   const [newName, setNewName] = useState('Test')
   const [newNumber, setNewNumber] = useState('7777')
   const [filterValue, setFilter] = useState('')
+  const [errorMessage, setErrorMessage] = useState({message: '', type: ''})
 
   useEffect(() => {
     axios.get('http://localhost:3001/persons')
@@ -35,7 +38,11 @@ const App = () => {
       return
     }
     personService.create(newPerson)
-      .then(person => setPersons([...persons, person]))
+      .then(person => {
+        setPersons([...persons, person])
+        setErrorMessage({message: `Added ${newName}`, type: 'success'})
+        setTimeout(() => setErrorMessage({}), 3000);
+      })
   }
 
   const handleNameChange = (event) => {
@@ -66,12 +73,17 @@ const App = () => {
 
   const handleUpdate = (id, newPerson) => {
     personService.update(id, newPerson)
-      .then(servicePerson => setPersons(persons.map(person =>
-        person.id !== id ? person : servicePerson)))
+      .then(servicePerson => {
+        setPersons(persons.map(person => person.id !== id ? person : servicePerson))
+        setErrorMessage({message: `Updated ${newName}`, type: 'success'})
+        setTimeout(() => setErrorMessage({}), 3000);
+      })
   }
 
   return (
     <div>
+      <Notification {...errorMessage} />
+
       <h2>Phonebook</h2>
       <FilterForm 
         onChange={handlePersonFilter} 
