@@ -33,19 +33,13 @@ app.get('/api/persons/:id', (request, response) => {
 app.delete('/api/persons/:id', (request, response, next) => {
   const id = request.params.id
   Person.findByIdAndRemove(id)
-    .then(() => 
+    .then(() => {
       response.status(204).end()
-    )
+    }).catch(error => next(error))
 })
 
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
-
-  if(!body.number || !body.name) {
-    return response.status(400).json({ 
-      error: 'name or number missing' 
-    })
-  }
 
   const person = new Person({
     name: body.name,
@@ -59,10 +53,30 @@ app.post('/api/persons', (request, response, next) => {
 
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
-    console.log(persons);
     response.json(persons.map(person => person.toJSON()))
   })
 })
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({
+    error: 'unknown endpoint'
+  })
+}
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError' && error.kind === 'ObjectId') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  }
+
+  next(error)
+}
+
+app.use(unknownEndpoint)
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
