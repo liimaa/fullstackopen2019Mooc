@@ -30,10 +30,12 @@ app.get('/api/persons/:id', (request, response) => {
   }
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
   const id = request.params.id
-  persons = persons.filter(person => person.id !== Number(id))
-  response.status(204).end()
+  Person.findByIdAndRemove(id)
+    .then(() => 
+      response.status(204).end()
+    )
 })
 
 app.post('/api/persons', (request, response, next) => {
@@ -44,7 +46,7 @@ app.post('/api/persons', (request, response, next) => {
       error: 'name or number missing' 
     })
   }
-  
+
   const person = new Person({
     name: body.name,
     number: body.number,
