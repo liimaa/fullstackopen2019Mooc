@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "nodemon index.js",
-    "build:ui": "rm -rf build && cd ./../../fullstackopen2019Mooc/osa2/phonebook && npm run build --prod && cp -r build ../../../fullstackopen2019MoocSub/phonebookbackend/",
+    "build:ui": "rm -rf build && cd ../phonebookfrontend/ && npm run build --prod && cp -r build ../phonebookdatabase/",
     "deploy": "git push heroku master",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
     "logs:prod": "heroku logs --tail"
@@ -18,6 +18,7 @@
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "mongoose": "^5.6.10",
+    "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.9.1"
   },
   "devDependencies": {

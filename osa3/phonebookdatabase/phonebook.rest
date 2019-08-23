@@ -5,8 +5,8 @@ POST http://localhost:3001/api/persons HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "asd",
-  "number": "123"
+  "name": "asdasds",
+  "number": "32423432"
 }
 
 //DELETE http://localhost:3001/api/persons/2 HTTP/1.1
