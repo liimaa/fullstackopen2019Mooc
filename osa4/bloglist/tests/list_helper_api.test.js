@@ -95,4 +95,20 @@ describe('Check if likes property is missing', () => {
   })
 })
 
+describe('Check if new blog has no title & url value', () => {
+  test('Fails with 400 bad request', async () => {
+    const newblog = {
+      title: '',
+      author: 'Ville valo',
+      url: '',
+      likes: 1,
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newblog)
+      .expect(400)
+  })
+})
+
 afterAll(() => mongoose.connection.close())

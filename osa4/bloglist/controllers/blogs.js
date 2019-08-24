@@ -13,6 +13,14 @@ blogRouter.get('/', async (request, response, next) => {
 blogRouter.post('/', async (request, response, next) => {
   const body = request.body
   try {
+
+    if (!body.title || !body.url) {
+      throw({
+        name: 'ValidationError',
+        message:'title or url is missing'
+      })
+    }
+
     const blogBody = new Blog({
       title: body.title,
       author: body.author,
