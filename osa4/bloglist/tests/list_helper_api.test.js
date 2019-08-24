@@ -36,4 +36,13 @@ describe('Check if all initial blogs return', () => {
   })
 })
 
+describe('Check if blog object _id === id', () => {
+  test('Succeeds with id check', async () => {
+    const response = await api.get('/api/blogs')
+    response.body.map(blog => {
+      expect(blog.id).toBeDefined()
+    })
+  })
+})
+
 afterAll(() => mongoose.connection.close())
