@@ -65,4 +65,34 @@ describe('Check if blog can be added && increments total of blogs', () => {
   })
 })
 
+describe('Check if likes property is missing', () => {
+  test('Succeeds with replaced 0', async () => {
+
+    const newblog = {
+      title: 'Yeet my man',
+      author: 'Ville valo',
+      url: 'zzz.zz',
+      likes: ''
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newblog)
+      .expect(201)
+
+    const response = await api.get('/api/blogs')
+
+    // const replacedResponse = response.body.map(blog => {
+    //   if(!blog.likes) blog.likes = 0
+    //   return blog
+    // })
+
+    //console.log(response.body)
+    response.body.map(blog =>  {
+      expect(blog.likes).toBeDefined()
+    })
+
+  })
+})
+
 afterAll(() => mongoose.connection.close())
