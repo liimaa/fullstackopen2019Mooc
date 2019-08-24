@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch": "nodemon index.js",
-    "test": "jest --verbose --runInBand || exit 0"
+    "watch": "cross-env NODE_ENV=development nodemon index.js",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand || exit 0"
   },
   "author": "Eemeli Sipiläinen",
   "license": "MIT",
@@ -18,9 +18,11 @@
     "morgan": "^1.9.1"
   },
   "devDependencies": {
+    "cross-env": "^5.2.0",
     "eslint": "^6.0.1",
     "jest": "^24.9.0",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2"
   },
   "jest": {
     "testEnvironment": "node"
