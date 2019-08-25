@@ -83,6 +83,12 @@ const App = () => {
     setBlogs(newBlogs)
   }
 
+  const sorter = (data, prop, asc) => {
+    return data.sort((a, b) => {
+      return asc ? a[prop] - b[prop] : b[prop] - a[prop]
+    })
+  }
+
   return (
     <div>
       <Notification {...notification} />
@@ -103,7 +109,7 @@ const App = () => {
               <BlogForm handleBlog={handleBlog}/>
           </Togglable>
 
-          {blogs.map(blog =>       
+          {sorter(blogs, 'likes', false).map(blog =>       
             <Blog key={blog.id} 
               {...blog} 
               handleLike={handleLike}
