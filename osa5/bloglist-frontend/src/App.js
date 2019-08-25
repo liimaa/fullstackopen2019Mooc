@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './App.css';
@@ -20,6 +22,7 @@ const App = () => {
     const user = window.localStorage.getItem('user')
     if(user) {
       setUser(JSON.parse(user))
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -29,15 +32,20 @@ const App = () => {
     window.localStorage.setItem('user', JSON.stringify(login))
     setPassword('')
     setUsername('')
-    console.log('handleLogin', login)
     setUser(login)
+    blogService.setToken(login.token)
   }
 
-  const handleUsernameChange = (event) => {
+  const handleBlog = async (blog) => {
+    const response = await blogService.create(blog)
+    setBlogs([...blogs, response])
+  }
+
+  const handleUsername = (event) => {
       setUsername(event.target.value)
   }
 
-  const handlePasswordChange = (event) => {
+  const handlePassword = (event) => {
     setPassword(event.target.value)
   }
 
@@ -50,30 +58,21 @@ const App = () => {
     <div>
       {
         user === null ?
-        <div>
-          <h2>Login please</h2>
-          <form onSubmit={handleLogin}>
-            username:
-            <input
-              name='username'
-              value={username}
-              onChange={handleUsernameChange}
-              type='text'
-            /><br />
-            password:
-            <input
-              name='password'
-              value={password}
-              onChange={handlePasswordChange}
-              type='password'
-            /><br />
-            <button>login</button>
-          </form>
-        </div>
+          <LoginForm
+            handleLogin={handleLogin}
+            handlePassword={handlePassword}
+            handleUsername={handleUsername}
+          />
         :
         <div>
           <h2>Blogs</h2>
           <p>{user.name} has logged in <button onClick={logOut}>logout</button></p>
+
+          <h2>Create new</h2>
+          <BlogForm 
+            handleBlog={handleBlog}
+          />
+
           {blogs.map(blog =>       
             <Blog
               loggedUser={user}
