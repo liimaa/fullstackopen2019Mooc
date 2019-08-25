@@ -17,6 +17,7 @@ app.use(cors())
 app.use(bodyParser.json())
 
 app.use(middleware.morganLog())
+app.use(middleware.jwtTokenExtractor)
 
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
