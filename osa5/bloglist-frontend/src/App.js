@@ -6,7 +6,7 @@ import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import './App.css';
+import './App.css'
 
 const App = () => {
 
@@ -14,7 +14,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [notification, setNotification] = useState({message: null, type: null})
+  const [notification, setNotification] = useState({ message: null, type: null })
   const [blogs, setBlogs] = useState([])
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const App = () => {
     const response = await blogService.create(blog)
     blogFormRef.current.toggleVisibility()
     setBlogs([...blogs, response])
-    setNotification({message: `a new blog: ${blog.title} ${blog.author}`, type: 'success'})
+    setNotification({ message: `a new blog: ${blog.title} ${blog.author}`, type: 'success' })
     setTimeout(() => setNotification(null), 3000)
   }
 
@@ -109,29 +109,29 @@ const App = () => {
             handlePassword={handlePassword}
             handleUsername={handleUsername}
           />
-        :
-        <div>
-          <h2>Blogs</h2>
-          <p>{user.name} has logged in <button onClick={logout}>logout</button></p>
+          :
+          <div>
+            <h2>Blogs</h2>
+            <p>{user.name} has logged in <button onClick={logout}>logout</button></p>
 
-          <h2>Create new</h2>
-          <Togglable label="new blog" ref={blogFormRef}>
+            <h2>Create new</h2>
+            <Togglable label="new blog" ref={blogFormRef}>
               <BlogForm handleBlog={handleBlog}/>
-          </Togglable>
+            </Togglable>
 
-          {sorter(blogs, 'likes', false).map(blog =>       
-            <Blog key={blog.id} 
-              {...blog} 
-              handleLike={handleLike}
-              handleRemove={handleRemove}
-              currentUser={user}
-            />
-          )}
-        </div>
+            {sorter(blogs, 'likes', false).map(blog =>
+              <Blog key={blog.id}
+                {...blog}
+                handleLike={handleLike}
+                handleRemove={handleRemove}
+                currentUser={user}
+              />
+            )}
+          </div>
       }
     </div>
   )
 }
 
 
-export default App;
+export default App
