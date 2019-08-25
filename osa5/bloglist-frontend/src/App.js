@@ -41,6 +41,11 @@ const App = () => {
     setPassword(event.target.value)
   }
 
+  const logOut = () => {
+    window.localStorage.removeItem('user')
+    setUser(null)
+  }
+
   return (
     <div>
       {
@@ -68,7 +73,7 @@ const App = () => {
         :
         <div>
           <h2>Blogs</h2>
-          <p>{user.name} has logged in</p>
+          <p>{user.name} has logged in <button onClick={logOut}>logout</button></p>
           {blogs.map(blog =>       
             <Blog
               loggedUser={user}
