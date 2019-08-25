@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 const Blog = (blog) => {
   const [richView, setRichView] = useState(false)
 
+  console.log(blog.user, blog.currentUser);
+
   return (
     richView
     ?
@@ -11,7 +13,8 @@ const Blog = (blog) => {
       <div> {blog.url} </div>
       <div> likes {blog.likes} <button onClick={(event) => blog.handleLike(event, blog)}>like</button> </div>
       <div> added by {blog.user.name} </div>
-      <button onClick={(event) => blog.handleRemove(event, blog)}>remove</button>
+      {blog.user.username === blog.currentUser.username ?
+         <button onClick={(event) => blog.handleRemove(event, blog)}>remove</button> : null}
     </div>
     :
     <div className='blog-item' onClick={() => setRichView(true)}>

@@ -62,7 +62,7 @@ const App = () => {
     setPassword(event.target.value)
   }
 
-  const logOut = () => {
+  const logout = () => {
     window.localStorage.removeItem('user')
     setUser(null)
   }
@@ -88,8 +88,8 @@ const App = () => {
     if(window.confirm(`Are you sure you want to remove blog
       ${blog.title} ${blog.author}`)) {
       await blogService.remove(blog.id)
-      let newblog = blogs.filter(b => b.id !== blog.id)
-      setBlogs(newblog)
+      let newBlogs = blogs.filter(b => b.id !== blog.id)
+      setBlogs(newBlogs)
     }
   }
 
@@ -112,7 +112,7 @@ const App = () => {
         :
         <div>
           <h2>Blogs</h2>
-          <p>{user.name} has logged in <button onClick={logOut}>logout</button></p>
+          <p>{user.name} has logged in <button onClick={logout}>logout</button></p>
 
           <h2>Create new</h2>
           <Togglable label="new blog" ref={blogFormRef}>
@@ -124,6 +124,7 @@ const App = () => {
               {...blog} 
               handleLike={handleLike}
               handleRemove={handleRemove}
+              currentUser={user}
             />
           )}
         </div>
