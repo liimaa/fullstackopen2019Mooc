@@ -10,6 +10,7 @@ const BlogForm = ({handleBlog}) => {
     <form onSubmit={(event) => {
       event.preventDefault()
       handleBlog(blog)
+      event.currentTarget.reset()
     }}>
       title:
       <input

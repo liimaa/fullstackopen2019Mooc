@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
+import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -11,6 +12,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [notification, setNotification] = useState({message: null, type: null})
   const [blogs, setBlogs] = useState([])
 
   useEffect(() => {
@@ -21,24 +23,32 @@ const App = () => {
   useEffect(() => {
     const user = window.localStorage.getItem('user')
     if(user) {
-      setUser(JSON.parse(user))
-      blogService.setToken(user.token)
+      let u = JSON.parse(user)
+      setUser(u)
+      blogService.setToken(u.token)
     }
   }, [])
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    const login = await loginService.login({ username, password })
-    window.localStorage.setItem('user', JSON.stringify(login))
-    setPassword('')
-    setUsername('')
-    setUser(login)
-    blogService.setToken(login.token)
+    try {
+      const login = await loginService.login({ username, password })
+      window.localStorage.setItem('user', JSON.stringify(login))
+      setPassword('')
+      setUsername('')
+      setUser(login)
+      blogService.setToken(login.token)
+    } catch (error) {
+      setNotification({ message:'Wrong username or password', type: 'error' })
+      setTimeout(() => setNotification(null), 3000)
+    }
   }
 
   const handleBlog = async (blog) => {
     const response = await blogService.create(blog)
     setBlogs([...blogs, response])
+    setNotification({message: `a new blog: ${blog.title} ${blog.author}`, type: 'success'})
+    setTimeout(() => setNotification(null), 3000)
   }
 
   const handleUsername = (event) => {
@@ -56,6 +66,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification {...notification} />
       {
         user === null ?
           <LoginForm
