@@ -55,7 +55,7 @@ const App = () => {
   }
 
   const handleUsername = (event) => {
-      setUsername(event.target.value)
+    setUsername(event.target.value)
   }
 
   const handlePassword = (event) => {
@@ -81,6 +81,16 @@ const App = () => {
       return b.id === blog.id ? { ...b, likes: newblog.likes } : b
     })
     setBlogs(newBlogs)
+  }
+
+  const handleRemove = async (event, blog) => {
+    event.stopPropagation()
+    if(window.confirm(`Are you sure you want to remove blog
+      ${blog.title} ${blog.author}`)) {
+      await blogService.remove(blog.id)
+      let newblog = blogs.filter(b => b.id !== blog.id)
+      setBlogs(newblog)
+    }
   }
 
   const sorter = (data, prop, asc) => {
@@ -113,7 +123,7 @@ const App = () => {
             <Blog key={blog.id} 
               {...blog} 
               handleLike={handleLike}
-
+              handleRemove={handleRemove}
             />
           )}
         </div>

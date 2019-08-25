@@ -11,6 +11,7 @@ const Blog = (blog) => {
       <div> {blog.url} </div>
       <div> likes {blog.likes} <button onClick={(event) => blog.handleLike(event, blog)}>like</button> </div>
       <div> added by {blog.user.name} </div>
+      <button onClick={(event) => blog.handleRemove(event, blog)}>remove</button>
     </div>
     :
     <div className='blog-item' onClick={() => setRichView(true)}>
