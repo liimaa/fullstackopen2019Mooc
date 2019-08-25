@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -9,6 +10,7 @@ import './App.css';
 
 const App = () => {
 
+  const blogFormRef = React.createRef()
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -46,6 +48,7 @@ const App = () => {
 
   const handleBlog = async (blog) => {
     const response = await blogService.create(blog)
+    blogFormRef.current.toggleVisibility()
     setBlogs([...blogs, response])
     setNotification({message: `a new blog: ${blog.title} ${blog.author}`, type: 'success'})
     setTimeout(() => setNotification(null), 3000)
@@ -80,15 +83,12 @@ const App = () => {
           <p>{user.name} has logged in <button onClick={logOut}>logout</button></p>
 
           <h2>Create new</h2>
-          <BlogForm 
-            handleBlog={handleBlog}
-          />
+          <Togglable label="new blog" ref={blogFormRef}>
+              <BlogForm handleBlog={handleBlog}/>
+          </Togglable>
 
           {blogs.map(blog =>       
-            <Blog
-              loggedUser={user}
-              key={blog.id} {...blog}
-            />
+            <Blog key={blog.id} {...blog} />
           )}
         </div>
       }
