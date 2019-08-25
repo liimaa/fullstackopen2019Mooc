@@ -57,11 +57,10 @@ blogRouter.delete('/:id', async (request, response, next) => {
 
     if(user.id.toString() !== blog.user.toString()) {
       throw({
-        name: 'Unauthorized',
-        message: 'invalid permissions'
+        name: 'Unauthorized'
       })
     }
-    
+
     await Blog.findByIdAndRemove(request.params.id)
     response.status(204).end()
   } catch (error) {
