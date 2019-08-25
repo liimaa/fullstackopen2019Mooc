@@ -15,6 +15,13 @@ usersRouter.post('/', async (request, response, next) => {
   const body = request.body
   try {
 
+    if(body.password.length < 4 ) {
+      throw ({
+        name: 'ValidationError',
+        message: 'Password validation failed: Password: minium length allowed is four (4).'
+      })
+    }
+
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(body.password, saltRounds)
 

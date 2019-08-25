@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const api = supertest(app)
 
 let initialBlogs = [
@@ -21,6 +22,7 @@ let initialBlogs = [
 
 beforeEach(async () => {
   await Blog.deleteMany({})
+  await User.deleteMany({})
 
   const blogArray = initialBlogs.map(blog => {
     return new Blog(blog).save()
@@ -109,6 +111,35 @@ describe('Check if new blog has no title & url value', () => {
       .send(newblog)
       .expect(400)
   })
+})
+
+describe('User', () => {
+  test('creation fails with wrong password length', async () => {
+    const newUser = {
+      username: 'es',
+      name: 'Eemeli',
+      password: '123'
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+  })
+
+  test('creation success with right password length', async () => {
+    const newUser = {
+      username: 'waw',
+      name: 'Wwwaaw',
+      password: '12345'
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(201)
+  })
+
 })
 
 afterAll(() => mongoose.connection.close())

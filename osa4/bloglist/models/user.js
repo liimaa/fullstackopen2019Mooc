@@ -5,7 +5,7 @@ mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true)
 
 const userSchema = mongoose.Schema({
-  username: String,
+  username: { type: String, unique: true },
   name: String,
   passwordHash: String
 })
