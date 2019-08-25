@@ -44,9 +44,25 @@ blogRouter.post('/', async (request, response, next) => {
 })
 
 blogRouter.delete('/:id', async (request, response, next) => {
-  const id = request.params.id
   try {
-    await Blog.findByIdAndRemove(id)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    if (!request.token || !decodedToken.id) {
+      throw({
+        name: 'JsonWebTokenError'
+      })
+    }
+
+    const user = await User.findById(decodedToken.id)
+    const blog = await Blog.findById(request.params.id)
+
+    if(user.id.toString() !== blog.user.toString()) {
+      throw({
+        name: 'Unauthorized',
+        message: 'invalid permissions'
+      })
+    }
+    
+    await Blog.findByIdAndRemove(request.params.id)
     response.status(204).end()
   } catch (error) {
     next(error)
