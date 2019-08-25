@@ -67,6 +67,22 @@ const App = () => {
     setUser(null)
   }
 
+  const handleLike = async (event, blog) => {
+    event.stopPropagation()
+    let newblog = {
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes + 1,
+      userID: blog.user.id
+    }
+    await blogService.update(blog.id, newblog)
+    let newBlogs = blogs.map(b => {
+      return b.id === blog.id ? { ...b, likes: newblog.likes } : b
+    })
+    setBlogs(newBlogs)
+  }
+
   return (
     <div>
       <Notification {...notification} />
@@ -88,7 +104,11 @@ const App = () => {
           </Togglable>
 
           {blogs.map(blog =>       
-            <Blog key={blog.id} {...blog} />
+            <Blog key={blog.id} 
+              {...blog} 
+              handleLike={handleLike}
+
+            />
           )}
         </div>
       }

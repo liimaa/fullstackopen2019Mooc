@@ -9,7 +9,7 @@ const Blog = (blog) => {
     <div className='blog-item rich' onClick={() => setRichView(false)}>
       <div> {blog.title} {blog.author} </div>
       <div> {blog.url} </div>
-      <div> likes {blog.likes} <button>like</button></div>
+      <div> likes {blog.likes} <button onClick={(event) => blog.handleLike(event, blog)}>like</button> </div>
       <div> added by {blog.user.name} </div>
     </div>
     :
