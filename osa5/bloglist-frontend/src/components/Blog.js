@@ -3,8 +3,6 @@ import React, { useState } from 'react'
 const Blog = (blog) => {
   const [richView, setRichView] = useState(false)
 
-  console.log(blog.user, blog.currentUser);
-
   return (
     richView
     ?
