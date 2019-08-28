@@ -1,0 +1,37 @@
+{
+  "notes": [
+    {
+      "content": "custom-hooks are awesome!",
+      "id": 1
+    },
+    {
+      "content": "best feature ever <3",
+      "id": 2
+    },
+    {
+      "content": "wew lad",
+      "id": 3
+    },
+    {
+      "content": "wew lada",
+      "id": 4
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "test dude",
+      "number": "1234-4556547547",
+      "id": 2
+    },
+    {
+      "name": "test dude 23",
+      "number": "1234-455654754 1237",
+      "id": 3
+    }
+  ]
+}
