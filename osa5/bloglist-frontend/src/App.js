@@ -6,14 +6,15 @@ import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { useField } from './hooks/index'
 import './App.css'
 
 const App = () => {
 
   const blogFormRef = React.createRef()
   const [user, setUser] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const username = useField('text')
+  const password = useField('password')
   const [notification, setNotification] = useState({ message: null, type: null })
   const [blogs, setBlogs] = useState([])
 
@@ -34,10 +35,11 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const login = await loginService.login({ username, password })
+      const login = await loginService.login({ 
+        username: username.value,
+        password: password.value
+      })
       window.localStorage.setItem('user', JSON.stringify(login))
-      setPassword('')
-      setUsername('')
       setUser(login)
       blogService.setToken(login.token)
     } catch (error) {
@@ -54,13 +56,13 @@ const App = () => {
     setTimeout(() => setNotification(null), 3000)
   }
 
-  const handleUsername = (event) => {
-    setUsername(event.target.value)
-  }
+  // const handleUsername = (event) => {
+  //   setUsername(event.target.value)
+  // }
 
-  const handlePassword = (event) => {
-    setPassword(event.target.value)
-  }
+  // const handlePassword = (event) => {
+  //   setPassword(event.target.value)
+  // }
 
   const logout = () => {
     window.localStorage.removeItem('user')
@@ -106,8 +108,8 @@ const App = () => {
         user === null ?
           <LoginForm
             handleLogin={handleLogin}
-            handlePassword={handlePassword}
-            handleUsername={handleUsername}
+            username={username}
+            password={password}
           />
           :
           <div>
