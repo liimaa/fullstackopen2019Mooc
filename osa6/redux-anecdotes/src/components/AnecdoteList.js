@@ -1,11 +1,16 @@
 import React from 'react';
 import { voteAnecdote } from '../reducers/anecdoteReducer';
+import { addNotification, hideNotification } from '../reducers/notificationReducer';
 
 const AnecdoteList = (props) => {
-  const anecdotes = props.store.getState()
+  
+  const { anecdotes } = props.store.getState()
+  
 
   const handleVote = (anecdote) => {
     props.store.dispatch(voteAnecdote(anecdote.id))
+    props.store.dispatch(addNotification('You voted: ' + anecdote.content))
+    setTimeout(() => props.store.dispatch(hideNotification()), 5000)
   }
 
   const sorter = (data, prop, asc) => {
