@@ -1,0 +1,25 @@
+import React from 'react'
+
+import { setFilter } from '../reducers/filterReducer';
+
+const Filter = (props) => {
+
+  const handleChange = (event) => {
+    props.store.dispatch(setFilter(event.target.value))
+  }
+
+  const style = {
+    marginBottom: 10
+  }
+
+  return (
+    <div>
+      <h2>filter</h2>
+      <div style={style}>
+        filter <input onChange={handleChange} />
+      </div>
+    </div>
+  )
+}
+
+export default Filter

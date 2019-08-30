@@ -4,7 +4,7 @@ import { addNotification, hideNotification } from '../reducers/notificationReduc
 
 const AnecdoteList = (props) => {
   
-  const { anecdotes } = props.store.getState()
+  const { anecdotes, filter } = props.store.getState()
   
 
   const handleVote = (anecdote) => {
@@ -13,16 +13,22 @@ const AnecdoteList = (props) => {
     setTimeout(() => props.store.dispatch(hideNotification()), 5000)
   }
 
-  const sorter = (data, prop, asc) => {
-    return data.sort((a, b) => {
+  const sorter = (data, prop, asc, filtering) => {
+    data = data.sort((a, b) => {
       return asc ? a[prop] - b[prop] : b[prop] - a[prop]
     })
+    if(filtering) {
+      data = data.filter(str => 
+        str.content.toLowerCase().indexOf(filter.toLowerCase()) >= 0
+      )
+    }
+    return data
   }
-
+  
   return(
     <div>
       <h2>Anecdotes</h2>
-      {sorter(anecdotes, 'votes', false).map(anecdote =>
+      {sorter(anecdotes, 'votes', false, true).map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
