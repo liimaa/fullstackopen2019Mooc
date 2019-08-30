@@ -15,10 +15,16 @@ const App = (props) => {
     event.target.reset()
   }
 
+  const sorter = (data, prop, asc) => {
+    return data.sort((a, b) => {
+      return asc ? a[prop] - b[prop] : b[prop] - a[prop]
+    })
+  }
+
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
+      {sorter(anecdotes, 'votes', false).map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
