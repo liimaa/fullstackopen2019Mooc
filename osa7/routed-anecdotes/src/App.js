@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import {
-  BrowserRouter as Router, Route, Link
+  BrowserRouter as Router, Route, Link, withRouter
 } from 'react-router-dom'
 const Menu = () => {
   const padding = {
@@ -54,7 +54,7 @@ const Footer = () => (
   </div>
 )
 
-const CreateNew = (props) => {
+let CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
@@ -68,6 +68,7 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    props.history.push('/')
   }
 
   return (
@@ -90,8 +91,9 @@ const CreateNew = (props) => {
       </form>
     </div>
   )
-
 }
+
+CreateNew = withRouter(CreateNew)
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -116,6 +118,8 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`Added anecdote: ${anecdote.content}`)
+    setTimeout(() => setNotification(null), 10000)
   }
 
   const anecdoteById = (id) =>
