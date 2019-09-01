@@ -7,7 +7,7 @@ const AnecdoteList = ({anecdotesToShow, voteAnecdote,
   hideNotification, addNotification}) => {
 
   const handleVote = (anecdote) => {
-    voteAnecdote(anecdote.id)
+    voteAnecdote(anecdote)
     addNotification('You voted: ' + anecdote.content)
     setTimeout(() => hideNotification(), 5000)
   }
