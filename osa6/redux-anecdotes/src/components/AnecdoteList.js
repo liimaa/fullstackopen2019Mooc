@@ -3,32 +3,19 @@ import { connect } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer';
 import { addNotification, hideNotification } from '../reducers/notificationReducer';
 
-const AnecdoteList = ({anecdotes, filter, voteAnecdote,
+const AnecdoteList = ({anecdotesToShow, voteAnecdote,
   hideNotification, addNotification}) => {
-  
 
-  const handleVote = (anecdote) => {
+    const handleVote = (anecdote) => {
     voteAnecdote(anecdote.id)
     addNotification('You voted: ' + anecdote.content)
     setTimeout(() => hideNotification(), 5000)
-  }
-
-  const sorter = (data, prop, asc, filtering) => {
-    data = data.sort((a, b) => {
-      return asc ? a[prop] - b[prop] : b[prop] - a[prop]
-    })
-    if(filtering) {
-      data = data.filter(str => 
-        str.content.toLowerCase().indexOf(filtering.toLowerCase()) >= 0
-      )
-    }
-    return data
   }
   
   return(
     <div>
       <h2>Anecdotes</h2>
-      {sorter(anecdotes, 'votes', false, filter).map(anecdote =>
+      {anecdotesToShow.map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
@@ -43,6 +30,18 @@ const AnecdoteList = ({anecdotes, filter, voteAnecdote,
   )
 }
 
+const sorter = (data, prop, asc, filtering) => {
+  data = data.sort((a, b) => {
+    return asc ? a[prop] - b[prop] : b[prop] - a[prop]
+  })
+  if(filtering) {
+    data = data.filter(str => 
+      str.content.toLowerCase().indexOf(filtering.toLowerCase()) >= 0
+    )
+  }
+  return data
+}
+
 const mapDispatchToProps = {
   addNotification,
   hideNotification,
@@ -51,8 +50,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => {
   return {
-    anecdotes: state.anecdotes,
-    filter: state.filter
+    anecdotesToShow: sorter(state.anecdotes, 'votes', false, state.filter)
   }
 }
 
