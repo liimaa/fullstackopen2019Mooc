@@ -1,14 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { addAnecdote } from '../reducers/anecdoteReducer';
+import React from 'react'
+import { connect } from 'react-redux'
+import { addAnecdote } from '../reducers/anecdoteReducer'
+import anecdoteService from '../services/anecdoteService'
 
 const AnecdoteForm = ({addAnecdote}) => {
 
-  const handleNewAnecdote = (event) => {
+  const handleNewAnecdote = async (event) => {
     event.preventDefault()
-    const content = event.target.anecdote.value
+    let content = {content: event.target.anecdote.value, votes: 0}
+    event.target.anecdote.value = ''
+    content = await anecdoteService.create(content)
     addAnecdote(content)
-    event.target.reset()
   }
 
   return(
