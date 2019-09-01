@@ -6,7 +6,7 @@ import { addNotification, hideNotification } from '../reducers/notificationReduc
 const AnecdoteList = ({anecdotesToShow, voteAnecdote,
   hideNotification, addNotification}) => {
 
-    const handleVote = (anecdote) => {
+  const handleVote = (anecdote) => {
     voteAnecdote(anecdote.id)
     addNotification('You voted: ' + anecdote.content)
     setTimeout(() => hideNotification(), 5000)
