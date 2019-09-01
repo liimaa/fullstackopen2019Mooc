@@ -1,15 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer';
-import { addNotification, hideNotification } from '../reducers/notificationReducer';
+import { addNotification } from '../reducers/notificationReducer';
 
 const AnecdoteList = ({anecdotesToShow, voteAnecdote,
-  hideNotification, addNotification}) => {
+  addNotification}) => {
 
   const handleVote = (anecdote) => {
     voteAnecdote(anecdote)
-    addNotification('You voted: ' + anecdote.content)
-    setTimeout(() => hideNotification(), 5000)
+    addNotification(`You voted: '${anecdote.content}'`, 3.20)
   }
   
   return(
@@ -44,7 +43,6 @@ const sorter = (data, prop, asc, filtering) => {
 
 const mapDispatchToProps = {
   addNotification,
-  hideNotification,
   voteAnecdote
 }
 
