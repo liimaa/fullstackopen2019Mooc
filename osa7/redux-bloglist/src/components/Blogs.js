@@ -11,9 +11,6 @@ const Blogs = ({blogs, user, resetUser}) => {
 
   return(
     <div>
-      <h2>Blogs</h2>
-      <p>{user.name} has logged in <button onClick={resetUser}>logout</button></p>
-    
       <h2>Create new</h2>
       <Togglable label="new blog" ref={blogFormRef}>
         <BlogForm />
