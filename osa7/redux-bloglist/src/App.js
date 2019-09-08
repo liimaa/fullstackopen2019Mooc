@@ -6,16 +6,17 @@ import Notification from './components/Notification'
 import Users from './components/Users'
 import User from './components/User'
 import Blog from './components/Blog'
+import Navigation from './components/Navigation'
 import './App.css'
 import { initBlogs } from './reducers/blogReducer'
-import { initUser, resetUser } from './reducers/userReducer'
+import { initUser } from './reducers/userReducer'
 import { initUsers } from './reducers/usersReducer'
 import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom'
 
-const App = ({initBlogs, initUser, initUsers, user, users, logout, blogs}) => {
+const App = ({initBlogs, initUser, initUsers, user, users, blogs}) => {
 
   useEffect(() => {
     initBlogs() // eslint-disable-next-line
@@ -28,23 +29,24 @@ const App = ({initBlogs, initUser, initUsers, user, users, logout, blogs}) => {
 
   return (
     <div>
-      <Notification />
-      {!user ? <LoginForm /> 
-      :
+      {!user ? 
       <>
-        <Router>
-          <h2>Blogs</h2>
-          <p>{user.name} has logged in <button onClick={logout}>logout</button></p>
-          <Route exact path="/" render={() => <Blogs />} />
-          <Route exact path="/users" render={() => <Users />} />
-          <Route exact path="/users/:id" render={({match}) =>
-            <User user={findById(match.params.id, users)} />
-          }/>
-          <Route exact path="/blogs/:id" render={({match}) =>
-            <Blog blog={findById(match.params.id, blogs)} />
-          }/>
-        </Router>
+        <Notification />
+        <LoginForm />
       </>
+      :
+      <Router>
+        <Navigation />
+        <Notification />
+        <Route exact path="/" render={() => <Blogs />} />
+        <Route exact path="/users" render={() => <Users />} />
+        <Route exact path="/users/:id" render={({match}) =>
+          <User user={findById(match.params.id, users)} />
+        }/>
+        <Route exact path="/blogs/:id" render={({match}) =>
+          <Blog blog={findById(match.params.id, blogs)} />
+        }/>
+      </Router>
       }
     </div>
   )
@@ -53,8 +55,7 @@ const App = ({initBlogs, initUser, initUsers, user, users, logout, blogs}) => {
 const mapDispatchToProps = {
   initBlogs,
   initUser,
-  initUsers,
-  logout: resetUser
+  initUsers
 }
 
 const mapStateToProps = (state) => {

@@ -39,7 +39,7 @@ const mapStateToProps = (state) => {
 Blogs.propTypes = {
   blogs: PropTypes.arrayOf(PropTypes.shape({
     user: PropTypes.shape({
-      id: PropTypes.string,
+      token: PropTypes.string,
       username: PropTypes.string,
       name: PropTypes.string,
     }).isRequired,

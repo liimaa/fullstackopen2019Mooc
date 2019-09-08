@@ -47,7 +47,7 @@ Users.propTypes = {
     })).isRequired,
     name: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
+    token: PropTypes.string.isRequired,
   })).isRequired
 }
 

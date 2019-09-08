@@ -5,11 +5,9 @@ import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { addNotification } from '../reducers/notificationReducer'
 
 const Blog = ({blog, user, removeBlog, likeBlog, addNotification}) => {
-  if (blog === undefined) {
+  if (!blog) {
     return null
   }
-
-  console.log(blog);
 
   const handleLike = async () => {
     likeBlog(blog)
@@ -51,7 +49,7 @@ const mapDispatchToProps = {
 
 Blog.propTypes = {
   user: PropTypes.shape({
-    id: PropTypes.string,
+    token: PropTypes.string,
     username: PropTypes.string,
     name: PropTypes.string
   }).isRequired,

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
 const User = ({user}) => {
-  if (user === undefined) {
+  if (!user) {
     return null
   }
 
@@ -35,7 +35,7 @@ User.propTypes = {
     })).isRequired,
     name: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired
+    token: PropTypes.string.isRequired
   })
 }
 
