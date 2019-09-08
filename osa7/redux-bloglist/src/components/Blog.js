@@ -1,53 +1,72 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
+import { addNotification } from '../reducers/notificationReducer'
 
-const Blog = (props) => {
-  const [richView, setRichView] = useState(false)
-  if (props === undefined) {
+const Blog = ({blog, user, removeBlog, likeBlog, addNotification}) => {
+  if (blog === undefined) {
     return null
   }
-  console.log(props);
-  const handleLike = async (event, blog) => {
-    event.stopPropagation()
-    props.likeBlog(blog)
+
+  console.log(blog);
+
+  const handleLike = async () => {
+    likeBlog(blog)
   }
 
-  const handleRemove = async (event, blog) => {
-    event.stopPropagation()
+  const handleRemove = async () => {
     if(window.confirm(`Are you sure you want to remove blog
       ${blog.title} ${blog.author}`)) {
-      props.removeBlog(blog.id)
+      removeBlog(blog.id)
+      addNotification({message:`blog: ${blog.title} ${blog.author} removed`, type:'success'}, 3.20)
     }
   }
 
   return (
-    richView
-    ?
-    <div className='blog-item rich' onClick={() => setRichView(false)}>
-      <div> {props.title} {props.author} </div>
-      <div> {props.url} </div>
-      <div> likes {props.likes} <button onClick={(event) => handleLike(event, props)}>like</button> </div>
-      <div> added by {props.user.name} </div>
-      {props.user.username === props.currentUser.username ?
-        <button onClick={(event) => handleRemove(event, props)}>remove</button> : null}
-    </div>
-    :
-    <div className='blog-item' onClick={() => setRichView(true)}>
-      {props.title} {props.author}
+    <div className='blog-item'>
+      <h2>{blog.title}</h2>
+      <div><a href={blog.url} target="_blank" rel="noopener noreferrer">{blog.url}</a></div>
+      <div> likes {blog.likes} <button onClick={handleLike}>like</button> </div>
+      <div>added by {blog.user.name}</div>
+      {blog.user.username === user.username ?
+        <button onClick={handleRemove}>remove</button> : null}
     </div>
   )
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+  //console.log(ownProps, "ownProps");
   return {
-    currentUser: state.user
+    user: state.user,
+    blog: ownProps.blog
   }
 }
 
 const mapDispatchToProps = {
   removeBlog,
-  likeBlog
+  likeBlog,
+  addNotification
+}
+
+Blog.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.string,
+    username: PropTypes.string,
+    name: PropTypes.string
+  }).isRequired,
+
+  blog: PropTypes.shape({
+    title: PropTypes.string,
+    author: PropTypes.string,
+    url: PropTypes.string,
+    likes: PropTypes.number,
+    id: PropTypes.string,
+  }),
+
+  removeBlog: PropTypes.func.isRequired,
+  likeBlog: PropTypes.func.isRequired,
+  addNotification: PropTypes.func.isRequired,
 }
 
 export default connect(

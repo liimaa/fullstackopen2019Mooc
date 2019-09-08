@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { addUser } from '../reducers/userReducer'
 import { useField } from '../hooks/index'
 import { addNotification } from '../reducers/notificationReducer'
+import PropTypes from 'prop-types'
 
 const LoginForm = ({addUser, addNotification}) => {
 
@@ -12,7 +13,7 @@ const LoginForm = ({addUser, addNotification}) => {
   const handleLogin = async (event) => {
     event.preventDefault()
     addUser({username: username.value, password: password.value})
-    .catch(() => addNotification('Wrong username or password', 3.20))
+    .catch(() => addNotification({message: 'Wrong username or password', type:"error"}, 3.20))
   }
 
   return(
@@ -32,6 +33,12 @@ const mapDispatchToProps = {
   addUser,
   addNotification
 }
+
+LoginForm.propTypes = {
+  addUser: PropTypes.func.isRequired,
+  addNotification: PropTypes.func.isRequired,
+}
+
 export default connect(
   null,
   mapDispatchToProps

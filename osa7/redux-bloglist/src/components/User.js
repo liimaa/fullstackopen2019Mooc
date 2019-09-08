@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 
-const Users = ({user}) => {
+const User = ({user}) => {
   if (user === undefined) {
     return null
   }
@@ -23,6 +24,21 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
+User.propTypes = {
+  user: PropTypes.shape({
+    blogs: PropTypes.arrayOf(PropTypes.shape({
+      title: PropTypes.string,
+      author: PropTypes.string,
+      url: PropTypes.string,
+      likes: PropTypes.number,
+      id: PropTypes.string
+    })).isRequired,
+    name: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired
+  })
+}
+
 export default connect(
   mapStateToProps,
-)(Users)
+)(User)

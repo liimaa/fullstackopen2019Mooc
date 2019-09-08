@@ -1,13 +1,13 @@
 .error {
   border: 0.1em solid red;
-  background-color: gray;
+  background-color: whitesmoke;
   color: red;
   padding: 1em;
 }
 
 .success {
   border: 0.1em solid green;
-  background-color: gray;
+  background-color: whitesmoke;
   color: green;
   padding: 1em;
 }
@@ -16,5 +16,4 @@
   border: 0.1em solid rosybrown;
   padding: 0.25em;
   margin: 0.25em 0 0.25em;
-  cursor: pointer;
 }

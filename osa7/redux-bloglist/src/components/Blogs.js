@@ -1,26 +1,24 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Blog from './Blog'
 import Togglable from './Togglable'
 import PropTypes from 'prop-types'
 import BlogForm from './BlogForm'
-import { resetUser } from '../reducers/userReducer'
+import { Link } from 'react-router-dom'
 
-const Blogs = ({blogs, user, resetUser}) => {
-    const blogFormRef = React.createRef()
-
+const Blogs = ({blogs}) => {
+  const blogFormRef = React.createRef()
   return(
     <div>
       <h2>Create new</h2>
       <Togglable label="new blog" ref={blogFormRef}>
-        <BlogForm />
+        <BlogForm blogFormRef={blogFormRef}/>
       </Togglable>
     
       {blogs.map(blog =>
-        <Blog key={blog.id}
-          {...blog}
-        />
-      ) }
+        <div className='blog-item' key={blog.id}> 
+          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+        </div>
+      )}
     </div>
   )
 }
@@ -38,16 +36,21 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {
-  resetUser,
-}
-
 Blogs.propTypes = {
-  blogs: PropTypes.array.isRequired,
-  user: PropTypes.object.isRequired
+  blogs: PropTypes.arrayOf(PropTypes.shape({
+    user: PropTypes.shape({
+      id: PropTypes.string,
+      username: PropTypes.string,
+      name: PropTypes.string,
+    }).isRequired,
+    title: PropTypes.string,
+    author: PropTypes.string,
+    url: PropTypes.string,
+    likes: PropTypes.number,
+    id: PropTypes.string,
+  })).isRequired
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
 )(Blogs)

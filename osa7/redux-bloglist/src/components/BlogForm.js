@@ -4,45 +4,48 @@ import PropTypes from 'prop-types'
 import { addNotification } from '../reducers/notificationReducer'
 import { addBlog } from '../reducers/blogReducer'
 
-const BlogForm = ({addBlog, addNotification}) => {
-
+const BlogForm = ({addBlog, addNotification, blogFormRef}) => {
   const [blog, setBlog] = useState({
     title: '', author: '', url: ''
   })
 
-  const handleBlog = async (blog) => {
-    //blogFormRef.current.toggleVisibility()
+  const handleBlog = async (event) => {
+    event.preventDefault()
+    blogFormRef.current.toggleVisibility()
     addBlog(blog)
-    addNotification(`a new blog: ${blog.title} ${blog.author}`, 3.20)
+    addNotification({message:`a new blog: ${blog.title} ${blog.author}`, type:'success'}, 3.20)
+    event.currentTarget.reset()
   }
 
   return(
-    <form onSubmit={(event) => {
-      event.preventDefault()
-      handleBlog(blog)
-      event.currentTarget.reset()
-    }}>
+    <form onSubmit={handleBlog}>
       title:
       <input
         name='title'
-        onChange={({target}) => setBlog({ ...blog, title: target.value })}
+        onChange={({target}) => setBlog({...blog, title: target.value})}
         type='text'
       /><br />
       author:
       <input
         name='author'
-        onChange={({target}) => setBlog({ ...blog, author: target.value })}
+        onChange={({target}) => setBlog({...blog, author: target.value})}
         type='text'
       /><br />
       url:
       <input
         name='url'
-        onChange={({target}) => setBlog({ ...blog, url: target.value })}
+        onChange={({target}) => setBlog({...blog, url: target.value})}
         type='text'
       /><br />
       <button type='submit'>Post</button>
     </form>
   )
+}
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    blogFormRef: ownProps.blogFormRef
+  }
 }
 
 const mapDispatchToProps = {
@@ -53,9 +56,13 @@ const mapDispatchToProps = {
 BlogForm.propTypes = {
   addBlog: PropTypes.func.isRequired,
   addNotification: PropTypes.func.isRequired,
+  blogFormRef: PropTypes.oneOfType([
+    PropTypes.func, // for legacy refs
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+  ])
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(BlogForm)

@@ -1,4 +1,9 @@
-const reducer = (state = null, action) => {
+const initialState = {
+  message: null,
+  type: null
+}
+
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_NOTIFICATION':
       return action.notification
@@ -9,7 +14,8 @@ const reducer = (state = null, action) => {
 
 export const addNotification = (notification, secound) => {
   return dispatch => {
-    const millisecond = (secound * 1000).toFixed(0);
+    if(!secound) secound = 2 
+    const millisecond = (secound * 1000).toFixed(0)
     dispatch({
       type: 'ADD_NOTIFICATION',
       notification
@@ -18,7 +24,7 @@ export const addNotification = (notification, secound) => {
     setTimeout(() => {
       dispatch({
         type: 'ADD_NOTIFICATION',
-        notification: null
+        notification: initialState
       })
     }, millisecond)
   }

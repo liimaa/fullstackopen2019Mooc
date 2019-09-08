@@ -5,16 +5,17 @@ import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import Users from './components/Users'
 import User from './components/User'
+import Blog from './components/Blog'
 import './App.css'
 import { initBlogs } from './reducers/blogReducer'
 import { initUser, resetUser } from './reducers/userReducer'
 import { initUsers } from './reducers/usersReducer'
 import {
   BrowserRouter as Router,
-  Route, Link
+  Route
 } from 'react-router-dom'
 
-const App = ({initBlogs, initUser, initUsers, user, users, resetUser}) => {
+const App = ({initBlogs, initUser, initUsers, user, users, logout, blogs}) => {
 
   useEffect(() => {
     initBlogs() // eslint-disable-next-line
@@ -33,12 +34,15 @@ const App = ({initBlogs, initUser, initUsers, user, users, resetUser}) => {
       <>
         <Router>
           <h2>Blogs</h2>
-          <p>{user.name} has logged in <button onClick={resetUser}>logout</button></p>
+          <p>{user.name} has logged in <button onClick={logout}>logout</button></p>
           <Route exact path="/" render={() => <Blogs />} />
           <Route exact path="/users" render={() => <Users />} />
           <Route exact path="/users/:id" render={({match}) =>
             <User user={findById(match.params.id, users)} />
-          } />
+          }/>
+          <Route exact path="/blogs/:id" render={({match}) =>
+            <Blog blog={findById(match.params.id, blogs)} />
+          }/>
         </Router>
       </>
       }
@@ -50,7 +54,7 @@ const mapDispatchToProps = {
   initBlogs,
   initUser,
   initUsers,
-  resetUser
+  logout: resetUser
 }
 
 const mapStateToProps = (state) => {
