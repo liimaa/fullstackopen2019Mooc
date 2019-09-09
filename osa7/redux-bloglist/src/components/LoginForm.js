@@ -10,7 +10,7 @@ const LoginForm = ({addUser, addNotification}) => {
   const username = useField('text')
   const password = useField('password')
 
-  const handleLogin = async (event) => {
+  const handleLogin = (event) => {
     event.preventDefault()
     addUser({username: username.value, password: password.value})
     .catch(() => addNotification({message: 'Wrong username or password', type:"error"}, 3.20))

@@ -9,11 +9,11 @@ const Blog = ({blog, user, removeBlog, likeBlog, addNotification}) => {
     return null
   }
 
-  const handleLike = async () => {
+  const handleLike = () => {
     likeBlog(blog)
   }
 
-  const handleRemove = async () => {
+  const handleRemove = () => {
     if(window.confirm(`Are you sure you want to remove blog
       ${blog.title} ${blog.author}`)) {
       removeBlog(blog.id)
@@ -29,6 +29,8 @@ const Blog = ({blog, user, removeBlog, likeBlog, addNotification}) => {
       <div>added by {blog.user.name}</div>
       {blog.user.username === user.username ?
         <button onClick={handleRemove}>remove</button> : null}
+      <h3>comments</h3>
+      <ul>{blog.comments.map((comment, i) => <li key={comment + i}>{comment}</li>)}</ul>
     </div>
   )
 }

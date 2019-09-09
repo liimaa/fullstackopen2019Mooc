@@ -9,7 +9,7 @@ const BlogForm = ({addBlog, addNotification, blogFormRef}) => {
     title: '', author: '', url: ''
   })
 
-  const handleBlog = async (event) => {
+  const handleBlog = (event) => {
     event.preventDefault()
     blogFormRef.current.toggleVisibility()
     addBlog(blog)
