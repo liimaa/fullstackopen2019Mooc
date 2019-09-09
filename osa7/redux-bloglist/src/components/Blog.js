@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { likeBlog, removeBlog } from '../reducers/blogReducer'
+import { likeBlog, removeBlog, addComment } from '../reducers/blogReducer'
 import { addNotification } from '../reducers/notificationReducer'
 
-const Blog = ({blog, user, removeBlog, likeBlog, addNotification}) => {
+const Blog = ({blog, user, removeBlog, likeBlog, addComment, addNotification}) => {
   if (!blog) {
     return null
   }
@@ -21,6 +21,13 @@ const Blog = ({blog, user, removeBlog, likeBlog, addNotification}) => {
     }
   }
 
+  const handleComment = (event) => {
+    event.preventDefault()
+    addComment(blog, event.target.comment.value)
+  }
+
+  console.log(blog.comments);
+
   return (
     <div className='blog-item'>
       <h2>{blog.title}</h2>
@@ -30,6 +37,10 @@ const Blog = ({blog, user, removeBlog, likeBlog, addNotification}) => {
       {blog.user.username === user.username ?
         <button onClick={handleRemove}>remove</button> : null}
       <h3>comments</h3>
+      <form onSubmit={handleComment}>
+        <input type='text' name='comment' />
+        <button type='onsubmit'>add comment</button>
+      </form>
       <ul>{blog.comments.map((comment, i) => <li key={comment + i}>{comment}</li>)}</ul>
     </div>
   )
@@ -46,7 +57,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = {
   removeBlog,
   likeBlog,
-  addNotification
+  addNotification,
+  addComment
 }
 
 Blog.propTypes = {
