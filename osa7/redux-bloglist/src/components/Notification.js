@@ -1,16 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import Alert from 'react-bootstrap/Button'
 
 const Notification = ({notification}) => {
   if(!notification.message) {
     return null
   }
 
-  return (
-    <div className={notification.type}>
+  return ( //notification.type
+    <Alert variant={'info'}>
       {notification.message}
-    </div>
+    </Alert>
   )
 }
 

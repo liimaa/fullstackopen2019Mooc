@@ -2,7 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { resetUser } from '../reducers/userReducer'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+import { Navbar, Nav, Button } from 'react-bootstrap';
 
 const Navigation = ({user, logout}) => {
   if (!user) {
@@ -10,17 +11,18 @@ const Navigation = ({user, logout}) => {
   }
 
   return (
-    <div>
-      <div style={{background: 'wheat'}}>
-        <p style={{padding: "0.5em"}}>
-          <Link style={{marginRight:"0.25em"}} to={`/`}>Blogs</Link>
-          <Link style={{marginRight:"0.25em"}} to={`/users`}>Users</Link>
-          {user.name} has logged in <button onClick={logout}>logout</button>
-        </p>
-        
-      </div>
-      <h2>Blog app</h2>
-    </div>
+  <Navbar bg="info" expand="sm" className='mb-5'>
+    <Navbar.Brand>Blog app</Navbar.Brand>
+    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+    <Navbar.Collapse id="basic-navbar-nav">
+      <Nav className="mr-auto">
+        <Nav.Link as={NavLink} to='/'>blogs</Nav.Link>
+        <Nav.Link as={NavLink} to='/users'>Users</Nav.Link>
+      </Nav>
+      <Navbar.Text> logged in as {user.name}  </Navbar.Text>
+      <Button variant="primary" onClick={logout}> logout</Button>
+    </Navbar.Collapse>
+  </Navbar>
   )
 }
 
@@ -37,9 +39,9 @@ const mapDispatchToProps = {
 Navigation.propTypes = {
   logout: PropTypes.func.isRequired,
   user: PropTypes.shape({
-    token: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
+    token: PropTypes.string,
+    username: PropTypes.string,
+    name: PropTypes.string,
   }).isRequired,
 }
 

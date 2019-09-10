@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { likeBlog, removeBlog, addComment } from '../reducers/blogReducer'
 import { addNotification } from '../reducers/notificationReducer'
+import { Button, Form, Row, Col } from 'react-bootstrap';
 
 const Blog = ({blog, user, removeBlog, likeBlog, addComment, addNotification}) => {
   if (!blog) {
@@ -24,23 +25,30 @@ const Blog = ({blog, user, removeBlog, likeBlog, addComment, addNotification}) =
   const handleComment = (event) => {
     event.preventDefault()
     addComment(blog, event.target.comment.value)
+    event.target.reset()
   }
-
-  console.log(blog.comments);
 
   return (
     <div className='blog-item'>
-      <h2>{blog.title}</h2>
-      <div><a href={blog.url} target="_blank" rel="noopener noreferrer">{blog.url}</a></div>
-      <div> likes {blog.likes} <button onClick={handleLike}>like</button> </div>
-      <div>added by {blog.user.name}</div>
-      {blog.user.username === user.username ?
-        <button onClick={handleRemove}>remove</button> : null}
+      <div>
+        <h2>{blog.title}</h2>
+        <div><a href={blog.url} target="_blank" rel="noopener noreferrer">{blog.url}</a></div>
+        <div> likes {blog.likes} <Button onClick={handleLike}>like</Button> </div>
+        <div>added by {blog.user.name}</div>
+        {blog.user.username === user.username ?
+          <Button onClick={handleRemove}>remove</Button> : null}
+      </div>
+      <Form onSubmit={handleComment}>
+        <Row>
+          <Col>
+            <Form.Control type='text' name='comment' />
+          </Col>
+          <Col>
+            <Button type='onsubmit'>add comment</Button>
+          </Col>
+        </Row>
+      </Form>
       <h3>comments</h3>
-      <form onSubmit={handleComment}>
-        <input type='text' name='comment' />
-        <button type='onsubmit'>add comment</button>
-      </form>
       <ul>{blog.comments.map((comment, i) => <li key={comment + i}>{comment}</li>)}</ul>
     </div>
   )

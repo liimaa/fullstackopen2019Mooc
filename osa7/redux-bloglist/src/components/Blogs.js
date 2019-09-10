@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import Togglable from './Togglable'
 import PropTypes from 'prop-types'
 import BlogForm from './BlogForm'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+import { ListGroup } from 'react-bootstrap';
 
 const Blogs = ({blogs}) => {
   const blogFormRef = React.createRef()
@@ -13,12 +14,17 @@ const Blogs = ({blogs}) => {
       <Togglable label="new blog" ref={blogFormRef}>
         <BlogForm blogFormRef={blogFormRef}/>
       </Togglable>
-    
-      {blogs.map(blog =>
-        <div className='blog-item' key={blog.id}> 
-          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-        </div>
-      )}
+      <ListGroup className='mt-5'>
+        {blogs.map(blog =>
+          <ListGroup.Item
+            as={NavLink} 
+            to={`/blogs/${blog.id}`} 
+            action variant="primary" 
+            key={blog.id}>
+            {blog.title}
+          </ListGroup.Item>
+        )}
+      </ListGroup>
     </div>
   )
 }

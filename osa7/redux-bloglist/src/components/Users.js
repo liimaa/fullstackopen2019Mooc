@@ -2,16 +2,17 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import Table from 'react-bootstrap/Table';
 
 const Users = ({users}) => {
 
   return (
     <div>
       <h2>Users</h2>
-      <table>
+      <Table bordered hover striped>
         <thead>
           <tr>
-            <th></th>
+            <th>User</th>
             <th>blogs created</th>
           </tr>
         </thead>
@@ -25,7 +26,7 @@ const Users = ({users}) => {
           </tr>
         )}
         </tbody>
-      </table>
+      </Table>
     </div>
   )
 }
@@ -45,9 +46,9 @@ Users.propTypes = {
       likes: PropTypes.number,
       id: PropTypes.string
     })).isRequired,
-    name: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-    token: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    username: PropTypes.string,
+    token: PropTypes.string,
   })).isRequired
 }
 

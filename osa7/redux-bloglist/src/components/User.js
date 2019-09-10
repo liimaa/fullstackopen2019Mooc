@@ -33,10 +33,10 @@ User.propTypes = {
       likes: PropTypes.number,
       id: PropTypes.string
     })).isRequired,
-    name: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-    token: PropTypes.string.isRequired
-  })
+    name: PropTypes.string,
+    username: PropTypes.string,
+    token: PropTypes.string
+  }).isRequired
 }
 
 export default connect(

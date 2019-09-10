@@ -4,6 +4,7 @@ import { addUser } from '../reducers/userReducer'
 import { useField } from '../hooks/index'
 import { addNotification } from '../reducers/notificationReducer'
 import PropTypes from 'prop-types'
+import { Form, Button, Container, Jumbotron} from 'react-bootstrap';
 
 const LoginForm = ({addUser, addNotification}) => {
 
@@ -17,16 +18,22 @@ const LoginForm = ({addUser, addNotification}) => {
   }
 
   return(
-    <div>
-      <h2>Login please</h2>
-      <form onSubmit={handleLogin}>
-        username:
-        <input {...username}/><br />
-        password:
-        <input {...password}/><br />
-        <button type='submit'>login</button>
-      </form>
-    </div>
+    <Container>
+      <Jumbotron className='bg-light'>
+        <Form onSubmit={handleLogin}>
+          <h2>Login please</h2>
+          <Form.Group>
+            <Form.Label>username</Form.Label>
+            <Form.Control {...username} />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>password</Form.Label>
+            <Form.Control {...password} />
+          </Form.Group>
+          <Button type='submit'>login</Button>
+        </Form>
+      </Jumbotron>
+    </Container>
   )
 }
 const mapDispatchToProps = {
