@@ -19,7 +19,7 @@ const Navigation = ({ user, logout }) => {
           <Nav.Link as={NavLink} to='/'>blogs</Nav.Link>
           <Nav.Link as={NavLink} to='/users'>Users</Nav.Link>
         </Nav>
-        <Navbar.Text style={{"margin-right": "0.5em"}}>logged in as {user.name}</Navbar.Text>
+        <Navbar.Text style={{"marginRight": "0.5em"}}>logged in as {user.name}</Navbar.Text>
         <Button variant="primary" onClick={logout}> logout</Button>
       </Navbar.Collapse>
     </Navbar>
