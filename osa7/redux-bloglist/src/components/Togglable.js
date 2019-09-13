@@ -1,6 +1,6 @@
 import React, { useState, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
-import Button from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/Button'
 
 const Togglable = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false)

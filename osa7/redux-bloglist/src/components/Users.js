@@ -2,9 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import Table from 'react-bootstrap/Table';
+import Table from 'react-bootstrap/Table'
 
-const Users = ({users}) => {
+const Users = ({ users }) => {
 
   return (
     <div>
@@ -17,14 +17,14 @@ const Users = ({users}) => {
           </tr>
         </thead>
         <tbody>
-        {users.map(user =>
-          <tr key={user.id}>
+          {users.map(user =>
+            <tr key={user.id}>
               <td>
                 <Link key={user.id} to={`/users/${user.id}`}>{user.name}</Link>
               </td>
-            <td>{user.blogs.length}</td>
-          </tr>
-        )}
+              <td>{user.blogs.length}</td>
+            </tr>
+          )}
         </tbody>
       </Table>
     </div>

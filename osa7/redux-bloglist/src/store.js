@@ -1,5 +1,5 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk';
+import thunk from 'redux-thunk'
 import notificationReducer from './reducers/notificationReducer'
 import blogReducer from './reducers/blogReducer'
 import userReducer from './reducers/userReducer'
@@ -13,7 +13,7 @@ const reducer = combineReducers({
   users: usersReducer
 })
 
-export default createStore(reducer, 
+export default createStore(reducer,
   composeWithDevTools(
     applyMiddleware(thunk)
   )

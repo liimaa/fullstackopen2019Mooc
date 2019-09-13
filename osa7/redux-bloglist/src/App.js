@@ -15,9 +15,9 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom'
-import { Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap'
 
-const App = ({initBlogs, initUser, initUsers, user, users, blogs}) => {
+const App = ({ initBlogs, initUser, initUsers, user, users, blogs }) => {
 
   useEffect(() => {
     initBlogs() // eslint-disable-next-line
@@ -30,26 +30,28 @@ const App = ({initBlogs, initUser, initUsers, user, users, blogs}) => {
 
   return (
     <div>
-      {!user ? 
+      {!user ?
       <>
+      <Container>
         <Notification />
         <LoginForm />
+      </Container>
       </>
-      :
-      <Router>
-        <Navigation />
-        <Container>
-          <Notification />
-          <Route exact path="/" render={() => <Blogs />} />
-          <Route exact path="/users" render={() => <Users />} />
-          <Route exact path="/users/:id" render={({match}) =>
-            <User user={findById(match.params.id, users)} />
-          }/>
-          <Route exact path="/blogs/:id" render={({match}) =>
-            <Blog blog={findById(match.params.id, blogs)} />
-          }/>
-        </Container>
-      </Router>
+        :
+        <Router>
+          <Navigation />
+          <Container>
+            <Notification />
+            <Route exact path="/" render={() => <Blogs />} />
+            <Route exact path="/users" render={() => <Users />} />
+            <Route exact path="/users/:id" render={({ match }) =>
+              <User user={findById(match.params.id, users)} />
+            }/>
+            <Route exact path="/blogs/:id" render={({ match }) =>
+              <Blog blog={findById(match.params.id, blogs)} />
+            }/>
+          </Container>
+        </Router>
       }
     </div>
   )

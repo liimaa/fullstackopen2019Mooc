@@ -3,13 +3,13 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Alert from 'react-bootstrap/Button'
 
-const Notification = ({notification}) => {
+const Notification = ({ notification }) => {
   if(!notification.message) {
     return null
   }
 
-  return ( //notification.type
-    <Alert variant={'info'}>
+  return (
+    <Alert variant={!notification.type ? 'success' : notification.type} style={{ 'margin': '1em' }}>
       {notification.message}
     </Alert>
   )

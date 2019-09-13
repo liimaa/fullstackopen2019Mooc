@@ -4,14 +4,14 @@ import loginService from '../services/login'
 const reducer = (state = null, action) => {
   //console.log('action', action, state)
   switch (action.type) {
-    case 'INIT_USER':
-      return action.data
-    case 'ADD_USER':
-      return action.data
-    case 'RESET_USER':
-      return null
-    default:
-      return state
+  case 'INIT_USER':
+    return action.data
+  case 'ADD_USER':
+    return action.data
+  case 'RESET_USER':
+    return null
+  default:
+    return state
   }
 }
 

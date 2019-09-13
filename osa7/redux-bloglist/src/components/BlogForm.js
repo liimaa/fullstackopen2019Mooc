@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { addNotification } from '../reducers/notificationReducer'
 import { addBlog } from '../reducers/blogReducer'
-import { Form, Button  } from 'react-bootstrap';
+import { Form, Button  } from 'react-bootstrap'
 
-const BlogForm = ({addBlog, addNotification, blogFormRef}) => {
+const BlogForm = ({ addBlog, addNotification, blogFormRef }) => {
   const [blog, setBlog] = useState({
     title: '', author: '', url: ''
   })
@@ -14,7 +14,7 @@ const BlogForm = ({addBlog, addNotification, blogFormRef}) => {
     event.preventDefault()
     blogFormRef.current.toggleVisibility()
     addBlog(blog)
-    addNotification({message:`a new blog: ${blog.title} ${blog.author}`, type:'success'}, 3.20)
+    addNotification({ message:`a new blog: ${blog.title} ${blog.author}`, type:'success' }, 3.20)
     event.currentTarget.reset()
   }
 
@@ -24,19 +24,19 @@ const BlogForm = ({addBlog, addNotification, blogFormRef}) => {
         <Form.Label>title:</Form.Label>
         <Form.Control
           name='title'
-          onChange={({target}) => setBlog({...blog, title: target.value})}
+          onChange={({ target }) => setBlog({ ...blog, title: target.value })}
           type='text'
         />
         <Form.Label>author:</Form.Label>
         <Form.Control
           name='author'
-          onChange={({target}) => setBlog({...blog, author: target.value})}
+          onChange={({ target }) => setBlog({ ...blog, author: target.value })}
           type='text'
         />
         <Form.Label>url:</Form.Label>
         <Form.Control
           name='url'
-          onChange={({target}) => setBlog({...blog, url: target.value})}
+          onChange={({ target }) => setBlog({ ...blog, url: target.value })}
           type='text'
         />
       </Form.Group>
