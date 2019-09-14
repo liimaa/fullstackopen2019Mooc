@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "watch": "cross-env NODE_ENV=development nodemon index.js",
-    "test": "cross-env NODE_ENV=test jest --verbose --runInBand || exit 0"
+    "test": "cross-env NODE_ENV=test nodemon index.js",
+    "jest": "cross-env NODE_ENV=test jest --verbose --runInBand || exit 0"
   },
   "author": "Eemeli Sipiläinen",
   "license": "MIT",

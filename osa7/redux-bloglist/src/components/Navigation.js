@@ -16,11 +16,11 @@ const Navigation = ({ user, logout }) => {
       <Navbar.Toggle aria-controls="basic-navbar-nav"/>
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link as={NavLink} to='/'>blogs</Nav.Link>
-          <Nav.Link as={NavLink} to='/users'>Users</Nav.Link>
+          <Nav.Link data-cy='blogs' as={NavLink} to='/'>blogs</Nav.Link>
+          <Nav.Link data-cy='users' as={NavLink} to='/users'>Users</Nav.Link>
         </Nav>
-        <Navbar.Text style={{"marginRight": "0.5em"}}>logged in as {user.name}</Navbar.Text>
-        <Button variant="primary" onClick={logout}> logout</Button>
+        <Navbar.Text style={{ 'marginRight': '0.5em' }}>logged in as {user.name}</Navbar.Text>
+        <Button data-cy='logout' variant="primary" onClick={logout}> logout</Button>
       </Navbar.Collapse>
     </Navbar>
   )

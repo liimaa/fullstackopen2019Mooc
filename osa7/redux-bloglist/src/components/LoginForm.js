@@ -24,13 +24,13 @@ const LoginForm = ({ addUser, addNotification }) => {
           <h2>Login please</h2>
           <Form.Group>
             <Form.Label>username</Form.Label>
-            <Form.Control {...username} />
+            <Form.Control data-cy='username' {...username} />
           </Form.Group>
           <Form.Group>
             <Form.Label>password</Form.Label>
-            <Form.Control {...password} />
+            <Form.Control data-cy='password' {...password} />
           </Form.Group>
-          <Button type='submit'>login</Button>
+          <Button data-cy='login' type='submit'>login</Button>
         </Form>
       </Jumbotron>
     </Container>

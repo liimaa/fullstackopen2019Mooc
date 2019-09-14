@@ -23,24 +23,27 @@ const BlogForm = ({ addBlog, addNotification, blogFormRef }) => {
       <Form.Group>
         <Form.Label>title:</Form.Label>
         <Form.Control
+          data-cy='title'
           name='title'
           onChange={({ target }) => setBlog({ ...blog, title: target.value })}
           type='text'
         />
         <Form.Label>author:</Form.Label>
         <Form.Control
+          data-cy='author'
           name='author'
           onChange={({ target }) => setBlog({ ...blog, author: target.value })}
           type='text'
         />
         <Form.Label>url:</Form.Label>
         <Form.Control
+          data-cy='url'
           name='url'
           onChange={({ target }) => setBlog({ ...blog, url: target.value })}
           type='text'
         />
       </Form.Group>
-      <Button type='submit'>Post</Button>
+      <Button data-cy='post' type='submit'>Post</Button>
     </Form>
   )
 }

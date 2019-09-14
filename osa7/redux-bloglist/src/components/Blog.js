@@ -1,11 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import PropTypes from 'prop-types'
 import { likeBlog, removeBlog, addComment } from '../reducers/blogReducer'
 import { addNotification } from '../reducers/notificationReducer'
 import { Button, Form, Row, Col } from 'react-bootstrap'
+import { withRouter } from 'react-router-dom'
 
-const Blog = ({ blog, user, removeBlog, likeBlog, addComment, addNotification }) => {
+const Blog = ({ blog, user, removeBlog, likeBlog, addComment, addNotification, history }) => {
   if (!blog) {
     return null
   }
@@ -19,6 +21,7 @@ const Blog = ({ blog, user, removeBlog, likeBlog, addComment, addNotification })
       ${blog.title} ${blog.author}`)) {
       removeBlog(blog.id)
       addNotification({ message:`blog: ${blog.title} ${blog.author} removed`, type:'success' }, 3.20)
+      history.push('/')
     }
   }
 
@@ -34,11 +37,18 @@ const Blog = ({ blog, user, removeBlog, likeBlog, addComment, addNotification })
       <div>
         <h2>{blog.title}</h2>
         <p><a href={blog.url} target="_blank" rel="noopener noreferrer">{blog.url}</a></p>
-        <p> likes {blog.likes} <Button size="sm" variant="outline-success" onClick={handleLike}>like</Button> </p>
+        <Row>
+          <Col xs={4} md={2}>
+            <p data-cy='likes'>likes {blog.likes}</p>
+          </Col>
+          <Col>
+            <Button data-cy='like' size="sm" variant="outline-success" onClick={handleLike}>like</Button>
+          </Col>
+        </Row>
         <p>added by {blog.user.name}</p>
         <p>
           {blog.user.username === user.username ?
-            <Button size="sm" variant="outline-danger" onClick={handleRemove}>remove</Button> : null}
+            <Button data-cy='remove' size="sm" variant="outline-danger" onClick={handleRemove}>remove</Button> : null}
         </p>
       </div>
       <h3>comments</h3>
@@ -46,19 +56,18 @@ const Blog = ({ blog, user, removeBlog, likeBlog, addComment, addNotification })
         <Row>
           <Col>
             <Form.Group>
-              <Form.Control type='text' name='comment' />
+              <Form.Control data-cy='comment' type='text' name='comment' />
             </Form.Group>
           </Col>
           <Col>
             <Form.Group>
-              <Button type='onsubmit'>add comment</Button>
+              <Button data-cy='add comment' type='onsubmit'>add comment</Button>
             </Form.Group>
           </Col>
         </Row>
       </Form>
       <div>
         <ul>{blog.comments.map((comment, i) => <li key={comment + i}>{comment}</li>)}</ul>
-
       </div>
       <p>
       </p>
@@ -101,7 +110,7 @@ Blog.propTypes = {
   addNotification: PropTypes.func.isRequired,
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
 )(Blog)
