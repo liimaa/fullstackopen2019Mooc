@@ -1,5 +1,6 @@
   
 const { ApolloServer, gql } = require('apollo-server')
+const uuid = require('uuid/v1')
 
 let authors = [
   {
@@ -94,6 +95,15 @@ const typeDefs = gql`
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
   }
+
+  type Mutation {
+    addBook(
+      title: String!
+      author: String!
+      published: Int!
+      genres: [String!]!
+    ) : Book
+  }
  
   type Book {
     title: String!
@@ -138,9 +148,27 @@ const resolvers = {
     bookCount: (root) => {
       return books.reduce((acc, b) => root.name === b.author ? acc + 1 : acc, 0)
     }
+  },
+  Mutation: {
+    addBook: (root, args) => {
+
+      if(!authors.find(a => a.name === args.author)) {
+        authors = authors.concat({ name: args.author, id: uuid() })
+      }
+
+      const book = { ...args, id: uuid() }
+      books = books.concat(book)
+      console.table(books)
+      console.table(authors)
+      return book
+    },
   }
 }
-
+/*
+    name: 'Robert Martin',
+    id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
+    born: 1952,
+*/
 const server = new ApolloServer({
   typeDefs,
   resolvers,
