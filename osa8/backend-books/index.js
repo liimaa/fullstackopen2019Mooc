@@ -103,6 +103,11 @@ const typeDefs = gql`
       published: Int!
       genres: [String!]!
     ) : Book
+
+    editAuthor(
+      name: String!
+      setBornTo: Int!
+    ): Author
   }
  
   type Book {
@@ -116,7 +121,7 @@ const typeDefs = gql`
   type Author {
     name: String!
     id: ID!
-    born: Int!
+    born: Int
     bookCount: Int!
   }
 
@@ -158,17 +163,20 @@ const resolvers = {
 
       const book = { ...args, id: uuid() }
       books = books.concat(book)
-      console.table(books)
-      console.table(authors)
       return book
     },
+    editAuthor: (root, args) => {
+      const author = authors.find(p => p.name === args.name)
+      if (!author) {
+        return null
+      }
+      const updatedAuthor = { ...author, born: args.setBornTo }
+      authors = authors.map(p => p.name === args.name ? updatedAuthor : p)
+      return updatedAuthor
+    }
   }
 }
-/*
-    name: 'Robert Martin',
-    id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
-    born: 1952,
-*/
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
