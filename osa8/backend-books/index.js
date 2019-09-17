@@ -171,9 +171,19 @@ const resolvers = {
       if(!await Author.findOne({name: author})) {
         author = new Author({ name: author })
         author = await author.save()
+          .catch(error => {
+            throw new UserInputError(error.message, {
+              invalidArgs: author
+            })
+          })
       }
       let newbook = new Book({ title, author, published, genres})
       return await newbook.save()
+        .catch(error => {
+          throw new UserInputError(error.message, {
+            invalidArgs: { title, published, genres }
+          })
+        })
     },
     editAuthor: async (root, { name, setBornTo }) => {
       let author = await Author.findOne({ name })
@@ -182,6 +192,11 @@ const resolvers = {
       }
       const updatedAuthor = await Author.findByIdAndUpdate(author.id,
         { born: setBornTo }, { new: true })
+        .catch(error => {
+          throw new UserInputError(error.message, {
+            invalidArgs: name
+          })
+        })
       return updatedAuthor
     }
   }
