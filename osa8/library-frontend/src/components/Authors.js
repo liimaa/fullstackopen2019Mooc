@@ -1,4 +1,5 @@
 import React from 'react'
+import Select from 'react-select'
 
 const Authors = ({updateBorn, authors, show, handleError}) => {
 
@@ -44,7 +45,11 @@ const Authors = ({updateBorn, authors, show, handleError}) => {
       </table>
       <h2>set birth year</h2>
       <form onSubmit={handleBorn}>
-        name: <input name='name' /><br />
+        { /* name: <input name='name' /><br /> */ }
+        <Select
+          options={authors.data.allAuthors.map(a => { return { value: a.name, label: a.name } })}
+          name='name'
+        />
         born: <input name='born' /><br />
         <button type='submit'>update author</button>
       </form>
