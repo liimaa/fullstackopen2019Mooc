@@ -48,7 +48,12 @@ const ADD_BOOK = gql`
       genres: $genres
     ) {
       title
-      author
+      author {
+        name
+        born
+        bookCount
+        id
+      }
       published
       id
       genres
