@@ -2,6 +2,8 @@ import React from 'react'
 
 const Books = ({books, show}) => {
 
+  console.log(books.data);
+
   if (!show) return null
   if (books.loading) return <p>Loading...</p>
   if (books.error) return <p>Error :(</p>
@@ -23,7 +25,7 @@ const Books = ({books, show}) => {
           {books.data.allBooks.map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
-              <td>{a.author}</td>
+              <td>{a.author.name}</td>
               <td>{a.published}</td>
             </tr>
           )}
