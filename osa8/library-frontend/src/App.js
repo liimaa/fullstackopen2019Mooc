@@ -76,11 +76,13 @@ const ADD_BOOK = gql`
   }
 `
 
+
+
 const App = () => {
   const client = useApolloClient()
   const [errorMessage, setErrorMessage] = useState(null)
   const [token, setToken] = useState(localStorage.getItem('books-user-token'))
-  const [page, setPage] = useState('authors')
+  const [page, setPage] = useState('books')
 
   const handleError = (error) => {
     console.log(error.message);
