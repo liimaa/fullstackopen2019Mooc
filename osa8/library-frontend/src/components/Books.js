@@ -22,11 +22,11 @@ const FILTER_BOOKS = gql`
 
 const Books = ({books, filterBooks, show}) => {
   const [genre, setGenre] = useState('')
-  const { data, errors } = useQuery(FILTER_BOOKS, { variables: { genre: genre } });
+  const filter = useQuery(FILTER_BOOKS, { variables: { genre: genre } });
 
   if (!show) return null
-  if (books.loading) return <p>Loading...</p>
-  if (books.error) return <p>Error :(</p>
+  if (books.loading || filter.loading) return <p>Loading...</p>
+  if (books.error || filter.error) return <p>Error :(</p>
 
   const filterGenre = async (event) => {
     event.target.value === "all genres" ? 
@@ -38,7 +38,7 @@ const Books = ({books, filterBooks, show}) => {
     arr.push('all genres')
     return [...new Set(arr)]
   }
-
+  
   return (
     <div>
       <h2>Books</h2>
@@ -54,13 +54,13 @@ const Books = ({books, filterBooks, show}) => {
               published
             </th>
           </tr>
-          {data ? data.allBooks.map(a =>
+          {filter.data.allBooks.map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
               <td>{a.published}</td>
             </tr>
-          ): null }
+          )}
         </tbody>
       </table>
       {showfilterGenreButtons(books.data.allBooks).map(b =>
