@@ -196,7 +196,7 @@ const resolvers = {
       if(!currentUser) {
         throw new AuthenticationError("Not authenticated")
       }
-      const oldAuthor = await Author.findOne({ name: author })
+      let oldAuthor = await Author.findOne({ name: author })
       if(!oldAuthor) {
         author = new Author({ name: author })
         oldAuthor = await author.save()
