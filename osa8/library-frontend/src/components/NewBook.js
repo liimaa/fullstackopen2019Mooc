@@ -27,7 +27,6 @@ const NewBook = ({show, addBook, handleError}) => {
       handleError(error)
     }
 
-
     setTitle('')
     setPublished('')
     setAuhtor('')
