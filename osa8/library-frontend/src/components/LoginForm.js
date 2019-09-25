@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LoginForm = ({ show, login, setToken, handleError }) => {
+const LoginForm = ({ show, login, setToken, setPage, handleError }) => { 
   if (!show) {
     return null
   }
@@ -18,6 +18,7 @@ const LoginForm = ({ show, login, setToken, handleError }) => {
       const token = result.data.login.value
       setToken(token)
       localStorage.setItem('books-user-token', token)
+      setPage('authors')
     }
   }
 
