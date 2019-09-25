@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const NewBook = ({show, addBook, handleError}) => {
+const NewBook = ({ show, addBook, handleError }) => {
   const [title, setTitle] = useState('')
   const [author, setAuhtor] = useState('')
   const [published, setPublished] = useState('')
@@ -35,7 +35,7 @@ const NewBook = ({show, addBook, handleError}) => {
   }
 
   const addGenre = () => {
-    setGenres(genres.concat(genre))
+    setGenres(genres.concat(genre.split(" ")))
     setGenre('')
   }
 
