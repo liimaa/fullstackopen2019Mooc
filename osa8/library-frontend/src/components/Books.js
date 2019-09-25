@@ -20,7 +20,7 @@ const FILTER_BOOKS = gql`
   }
 `
 
-const Books = ({books, filterBooks, show}) => {
+const Books = ({ books, show }) => {
   const [genre, setGenre] = useState('')
   const filter = useQuery(FILTER_BOOKS, { variables: { genre: genre } });
 
