@@ -3,6 +3,7 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
+import Recommendations from './components/Recommendations'
 import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 
@@ -40,7 +41,6 @@ const ALL_BOOKS = gql`
   }
 }
 `
-
 const UPDATE_BORN = gql`
   mutation updateBorn($name: String!, $born: Int!) {
     editAuthor (
@@ -76,16 +76,14 @@ const ADD_BOOK = gql`
   }
 `
 
-
-
 const App = () => {
   const client = useApolloClient()
   const [errorMessage, setErrorMessage] = useState(null)
   const [token, setToken] = useState(localStorage.getItem('books-user-token'))
-  const [page, setPage] = useState('books')
+  const [page, setPage] = useState('authors') //recommendations
 
   const handleError = (error) => {
-    console.log(error.message);
+    console.log(error.message)
     if(error.graphQLErrors) {
       setErrorMessage(error.graphQLErrors[0].message)
     } else {
@@ -98,18 +96,18 @@ const App = () => {
 
   const authors = useQuery(ALL_AUTHORS)
   const books = useQuery(ALL_BOOKS)
-
+  
   const [login] = useMutation(LOGIN, {
-    onError: handleError
+    onError: handleError,
   })
 
   const [addBook] = useMutation(ADD_BOOK, {
-    refetchQueries: ['allBooks', 'allAuthors'], //[{ query: ALL_AUTHORS }, { query: ALL_BOOKS }]
+    refetchQueries: ['allBooks', 'allAuthors',
+     'recommendations', 'filterBooks'],
     onError: handleError
   })
 
   const [updateBorn] = useMutation(UPDATE_BORN, {
-    //refetchQueries: ['allAuthors'],
     onError: handleError
   })
 
@@ -124,6 +122,7 @@ const App = () => {
       <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
+        {token ? <button onClick={() => setPage('recommendations')}>recommendations</button> : null}
         {token ? <button onClick={() => setPage('add')}>add book</button> : null}
         {token ? <button onClick={logout}>logout</button> : <button onClick={() => setPage('login')}>login</button> }
       </div>
@@ -156,7 +155,13 @@ const App = () => {
         login={login}
         setToken={(token) => setToken(token)}
         handleError={handleError}
+        setPage={(page) => setPage(page)}
         show={page === 'login'}
+      />
+
+      <Recommendations
+        token={token}
+        show={page === 'recommendations'}
       />
 
     </div>
