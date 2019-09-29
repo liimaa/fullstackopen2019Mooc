@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
@@ -147,16 +147,20 @@ const App = () => {
 
   const authors = useQuery(ALL_AUTHORS)
 
-  authors.subscribeToMore({
-    document: AUTHOR_ADDED,
-    updateQuery: (previousData, { subscriptionData }) => {
-      if(!previousData.allAuthors) return previousData
-
-      if(!includedIn(previousData.allAuthors, subscriptionData.data.authorAdded)) {
-        return { allAuthors : [...previousData.allAuthors, subscriptionData.data.authorAdded]}
+  useEffect(() => {
+    authors.subscribeToMore({
+      document: AUTHOR_ADDED,
+      updateQuery: (previousData, { subscriptionData }) => {
+        console.log(subscriptionData);
+        if(!subscriptionData.data.authorAdded) return previousData
+        
+        if(!includedIn(previousData.allAuthors, subscriptionData.data.authorAdded)) {
+          return { allAuthors : [...previousData.allAuthors, subscriptionData.data.authorAdded]}
+        }
+        return previousData
       }
-    },
-  })
+    })
+  }, [])
 
   const books = useQuery(ALL_BOOKS)
   const [login] = useMutation(LOGIN, {
