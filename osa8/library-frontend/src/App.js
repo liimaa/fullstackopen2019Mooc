@@ -4,7 +4,7 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Recommendations from './components/Recommendations'
-import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks'
+import { useMutation, useQuery, useSubscription, useApolloClient } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 
 const LOGIN = gql`
@@ -54,6 +54,22 @@ const UPDATE_BORN = gql`
     }
   }
 `
+
+const BOOK_DETAILS = gql`
+  fragment BookDetails on Book {
+    title
+    author {
+      name
+      born
+      bookCount
+      id
+    }
+    published
+    id
+    genres
+  }
+`
+
 const ADD_BOOK = gql`
   mutation addBook($title: String!, $author: String!, $published: Int!, $genres: [String!]!) {
     addBook(
@@ -62,16 +78,28 @@ const ADD_BOOK = gql`
       published: $published, 
       genres: $genres
     ) {
-      title
-      author {
-        name
-        born
-        bookCount
-        id
-      }
-      published
+      ...BookDetails
+    }
+  }
+  ${BOOK_DETAILS}
+`
+
+const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      ...BookDetails
+    }
+  }
+  ${BOOK_DETAILS}
+`
+
+const AUTHOR_ADDED = gql`
+  subscription {
+    authorAdded {
+      name
+      born
+      bookCount
       id
-      genres
     }
   }
 `
@@ -80,7 +108,7 @@ const App = () => {
   const client = useApolloClient()
   const [errorMessage, setErrorMessage] = useState(null)
   const [token, setToken] = useState(localStorage.getItem('books-user-token'))
-  const [page, setPage] = useState('authors') //recommendations
+  const [page, setPage] = useState('books')
 
   const handleError = (error) => {
     console.log(error.message)
@@ -94,17 +122,53 @@ const App = () => {
     }, 10000)
   }
 
+  const includedIn = (set, object) => 
+    set.map(b => b.id).includes(object.id)
+
+  const updateCacheWith = (addedBook) => {
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      dataInStore.allBooks.push(addedBook)
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: dataInStore
+      })
+    }
+  }
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded
+      setErrorMessage(`${addedBook.title} was added to site`)
+      setTimeout(() => setErrorMessage(null), 5000)
+      updateCacheWith(addedBook)
+    }
+  })
+
   const authors = useQuery(ALL_AUTHORS)
+
+  authors.subscribeToMore({
+    document: AUTHOR_ADDED,
+    updateQuery: (previousData, { subscriptionData }) => {
+      if(!previousData.allAuthors) return previousData
+
+      if(!includedIn(previousData.allAuthors, subscriptionData.data.authorAdded)) {
+        return { allAuthors : [...previousData.allAuthors, subscriptionData.data.authorAdded]}
+      }
+    },
+  })
+
   const books = useQuery(ALL_BOOKS)
-  
   const [login] = useMutation(LOGIN, {
     onError: handleError,
   })
 
   const [addBook] = useMutation(ADD_BOOK, {
-    refetchQueries: ['allBooks', 'allAuthors',
-     'recommendations', 'filterBooks'],
-    onError: handleError
+    onError: handleError,
+    refetchQueries: ['recommendations'],
+    update: (store, response) => {
+      updateCacheWith(response.data.addBook)
+    }
   })
 
   const [updateBorn] = useMutation(UPDATE_BORN, {

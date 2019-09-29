@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost'
 
@@ -22,15 +22,21 @@ const FILTER_BOOKS = gql`
 
 const Books = ({ books, show }) => {
   const [genre, setGenre] = useState('')
-  const filter = useQuery(FILTER_BOOKS, { variables: { genre: genre } });
+  const filter = useQuery(FILTER_BOOKS, {
+    variables: { genre: genre }
+ })
+
+  useEffect(() => {
+    filter.refetch(genre)  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [genre]);
 
   if (!show) return null
   if (books.loading || filter.loading) return <p>Loading...</p>
   if (books.error || filter.error) return <p>Error :(</p>
 
-  const filterGenre = async (event) => {
-    event.target.value === "all genres" ? 
-    setGenre('') : setGenre(event.target.value)
+  const filterGenre = (event) => {
+    let q = event.target.value === 'all genres' ?  '' : event.target.value
+    setGenre(q)
   }
   
   const showfilterGenreButtons = (arr) => {
@@ -38,7 +44,17 @@ const Books = ({ books, show }) => {
     arr.push('all genres')
     return [...new Set(arr)]
   }
-  
+
+  const showBooks = (arr) => {
+    return arr.map(b =>
+      <tr key={b.title}>
+        <td>{b.title}</td>
+        <td>{b.author.name}</td>
+        <td>{b.published}</td>
+      </tr>
+    )
+  }
+
   return (
     <div>
       <h2>Books</h2>
@@ -54,13 +70,7 @@ const Books = ({ books, show }) => {
               published
             </th>
           </tr>
-          {filter.data.allBooks.map(a =>
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author.name}</td>
-              <td>{a.published}</td>
-            </tr>
-          )}
+          {genre ? showBooks(filter.data.allBooks) : showBooks(books.data.allBooks)}
         </tbody>
       </table>
       {showfilterGenreButtons(books.data.allBooks).map(b =>
